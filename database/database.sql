@@ -10,6 +10,6 @@ CREATE TABLE game(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-RENAME TABLE game to gmes;
+RENAME TABLE game to games;
 
 DESCRIBE games;
