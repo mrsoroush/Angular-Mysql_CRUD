@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, HostBinding } from '@angular/core';
 
 import { GamesService } from 'src/app/services/games.service';
 
@@ -8,23 +7,34 @@ import { GamesService } from 'src/app/services/games.service';
   templateUrl: './game-list.component.html',
   styleUrls: ['./game-list.component.css']
 })
-export class GameListComponent implements OnInit, OnDestroy {
-  
-  gameSubscription: Subscription;
+export class GameListComponent implements OnInit {
+
+  @HostBinding('class') classes = 'row';
   games: any = [];
   
   constructor(private gamesService: GamesService) { }
   
   ngOnInit() {
-    this.gameSubscription = this.gamesService.getGames().subscribe(
+    this.getGames();
+  }
+
+  getGames() {
+    this.gamesService.getGames().subscribe(
       res => {
         this.games = res;
       },
       err => console.error(err)
       );
-    }
-    
-    ngOnDestroy(): void {
-      this.gameSubscription.unsubscribe();
-    }
+  }
+
+  deleteGame(id: string) {
+    this.gamesService.deleteGame(id).subscribe(
+      res => {
+        alert(res);
+        this.getGames();
+      },
+      err => console.error(err)
+    );
+  }
+
 }
